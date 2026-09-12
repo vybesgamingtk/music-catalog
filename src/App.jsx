@@ -1,50 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Play, Pause, Circle } from "lucide-react";
 
-// ---- Mock data — swap this for your real catalog once wired to real files ----
+// ---- Your real catalog ----
 const TRACKS = [
-  { id: 1, title: "Undertow", status: "finished", duration: "3:42", year: "2019", note: "first thing I ever finished" },
-  { id: 2, title: "Glass Weather", status: "finished", duration: "2:58", year: "2020" },
-  { id: 3, title: "Kite String (sketch)", status: "sketch", duration: "1:14", year: "2021" },
-  { id: 4, title: "Low Tide Radio", status: "finished", duration: "4:21", year: "2022" },
-  { id: 5, title: "Static Bloom", status: "sketch", duration: "0:52", year: "2023" },
-  { id: 6, title: "Coastal Drift II", status: "finished", duration: "3:15", year: "2023" },
-  { id: 7, title: "Everything At Once", status: "finished", duration: "5:03", year: "2024" },
-  { id: 8, title: "Hallway Loop (sketch)", status: "sketch", duration: "2:07", year: "2024" },
+  { id: "IjlZBQzbpoc", title: "Crash out", status: "finished" },
+  { id: "o5IeL0_tIys", title: "Cantaloupes", status: "finished" },
+  { id: "dr85VIVQJVk", title: "Drama", status: "finished" },
+  { id: "pcX5haA185U", title: "Elevator freestyle 1", status: "finished" },
+  { id: "XU4_QGSf94A", title: "Benghazi", status: "finished" },
+  { id: "VJYM_mtkNGk", title: "Ballin 4 no reason", status: "finished" },
+  { id: "Ez9n5RrNrVE", title: "sub", status: "finished" },
+  { id: "ityxyMylXoI", title: "Cahoots", status: "finished" },
 ];
-
-function Waveform({ active }) {
-  const bars = 40;
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 2, height: 20 }}>
-      {Array.from({ length: bars }).map((_, i) => {
-        const h = 4 + Math.abs(Math.sin(i * 0.7 + (active ? Date.now() / 300 : 0))) * 14;
-        return (
-          <div
-            key={i}
-            style={{
-              width: 2,
-              height: active ? h : 4 + (i % 5) * 2,
-              background: active ? "var(--accent)" : "var(--line)",
-              borderRadius: 1,
-              transition: "height 0.15s ease",
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-}
 
 export default function App() {
   const [playingId, setPlayingId] = useState(null);
-
-  useEffect(() => {
-    if (playingId === null) return;
-    const t = setInterval(() => {}, 150);
-    return () => clearInterval(t);
-  }, [playingId]);
-
   const finishedCount = TRACKS.filter((t) => t.status === "finished").length;
   const sketchCount = TRACKS.length - finishedCount;
 
@@ -88,7 +58,9 @@ export default function App() {
           </p>
           <div className="mono" style={{ display: "flex", gap: 24, marginTop: 28, fontSize: 12, color: "rgba(237,230,218,0.55)" }}>
             <span><Circle size={7} fill="var(--accent)" color="var(--accent)" style={{ verticalAlign: "middle", marginRight: 6 }} />{finishedCount} FINISHED</span>
-            <span><Circle size={7} fill="var(--sketch)" color="var(--sketch)" style={{ verticalAlign: "middle", marginRight: 6 }} />{sketchCount} SKETCHES</span>
+            {sketchCount > 0 && (
+              <span><Circle size={7} fill="var(--sketch)" color="var(--sketch)" style={{ verticalAlign: "middle", marginRight: 6 }} />{sketchCount} SKETCHES</span>
+            )}
           </div>
         </div>
 
@@ -96,33 +68,46 @@ export default function App() {
           {TRACKS.map((track, i) => {
             const isPlaying = playingId === track.id;
             return (
-              <div
-                key={track.id}
-                className="track-row"
-                tabIndex={0}
-                style={{ display: "grid", gridTemplateColumns: "32px 1fr 120px 60px 44px", alignItems: "center", gap: 16, padding: "16px 8px", borderBottom: "1px solid var(--line)", cursor: "pointer" }}
-                onClick={() => setPlayingId(isPlaying ? null : track.id)}
-              >
-                <span className="mono" style={{ fontSize: 12, color: "rgba(237,230,218,0.4)" }}>{String(i + 1).padStart(2, "0")}</span>
-                <div>
+              <div key={track.id} style={{ borderBottom: "1px solid var(--line)" }}>
+                <div
+                  className="track-row"
+                  tabIndex={0}
+                  style={{ display: "grid", gridTemplateColumns: "32px 1fr 100px 44px", alignItems: "center", gap: 16, padding: "16px 8px", cursor: "pointer" }}
+                  onClick={() => setPlayingId(isPlaying ? null : track.id)}
+                >
+                  <span className="mono" style={{ fontSize: 12, color: "rgba(237,230,218,0.4)" }}>{String(i + 1).padStart(2, "0")}</span>
                   <div style={{ fontSize: 17, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
                     {track.title}
                     {track.status === "sketch" && (
                       <span className="mono" style={{ fontSize: 10, color: "var(--sketch)", border: "1px solid var(--sketch)", borderRadius: 3, padding: "1px 5px", letterSpacing: 1 }}>SKETCH</span>
                     )}
                   </div>
-                  {track.note && <div style={{ fontSize: 13, color: "rgba(237,230,218,0.5)", marginTop: 2 }}>{track.note}</div>}
+                  <span className="mono" style={{ fontSize: 11, color: "rgba(237,230,218,0.4)", textAlign: "right" }}>
+                    {isPlaying ? "PLAYING" : "YOUTUBE"}
+                  </span>
+                  <button
+                    className="play-btn"
+                    aria-label={isPlaying ? `Close ${track.title}` : `Play ${track.title}`}
+                    style={{ width: 36, height: 36, borderRadius: "50%", border: `1px solid ${isPlaying ? "var(--accent)" : "var(--line)"}`, background: isPlaying ? "var(--accent)" : "transparent", color: isPlaying ? "var(--ink)" : "var(--paper)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+                    onClick={(e) => { e.stopPropagation(); setPlayingId(isPlaying ? null : track.id); }}
+                  >
+                    {isPlaying ? <Pause size={14} /> : <Play size={14} style={{ marginLeft: 2 }} />}
+                  </button>
                 </div>
-                <Waveform active={isPlaying} />
-                <span className="mono" style={{ fontSize: 12, color: "rgba(237,230,218,0.5)", textAlign: "right" }}>{track.duration}</span>
-                <button
-                  className="play-btn"
-                  aria-label={isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
-                  style={{ width: 36, height: 36, borderRadius: "50%", border: `1px solid ${isPlaying ? "var(--accent)" : "var(--line)"}`, background: isPlaying ? "var(--accent)" : "transparent", color: isPlaying ? "var(--ink)" : "var(--paper)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
-                  onClick={(e) => { e.stopPropagation(); setPlayingId(isPlaying ? null : track.id); }}
-                >
-                  {isPlaying ? <Pause size={14} /> : <Play size={14} style={{ marginLeft: 2 }} />}
-                </button>
+
+                {isPlaying && (
+                  <div style={{ padding: "0 8px 20px" }}>
+                    <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, borderRadius: 8, overflow: "hidden" }}>
+                      <iframe
+                        src={`https://www.youtube.com/embed/${track.id}?autoplay=1`}
+                        title={track.title}
+                        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
