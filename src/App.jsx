@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Play, Pause, Circle } from "lucide-react";
 
-// ---- Your real catalog ----
 const TRACKS = [
   { id: "IjlZBQzbpoc", title: "Crash out", status: "finished" },
   { id: "o5IeL0_tIys", title: "Cantaloupes", status: "finished" },
@@ -15,8 +14,15 @@ const TRACKS = [
 
 export default function App() {
   const [playingId, setPlayingId] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
   const finishedCount = TRACKS.filter((t) => t.status === "finished").length;
   const sketchCount = TRACKS.length - finishedCount;
+
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div
@@ -43,27 +49,63 @@ export default function App() {
         }
       `}</style>
 
-      <div className="catalog-root" style={{ maxWidth: 780, margin: "0 auto", padding: "64px 24px 100px" }}>
-        <div style={{ marginBottom: 56 }}>
+      {/* Parallax hero */}
+      <div style={{ position: "relative", height: "70vh", overflow: "hidden" }}>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "130%",
+            backgroundImage: "url('/public/preview.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 25%",
+            transform: `translateY(${scrollY * 0.35}px)`,
+            willChange: "transform",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(180deg, rgba(21,19,19,0.35) 0%, rgba(21,19,19,0.85) 75%, var(--ink) 100%)",
+          }}
+        />
+        <div
+          className="catalog-root"
+          style={{
+            position: "relative",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            maxWidth: 780,
+            margin: "0 auto",
+            padding: "24px 24px 48px",
+          }}
+        >
           <div className="mono" style={{ fontSize: 12, letterSpacing: 2, color: "var(--accent)", marginBottom: 14 }}>
             REEL 001 — {TRACKS.length} TRACKS LOGGED
           </div>
           <h1 style={{ fontSize: "clamp(38px, 6vw, 58px)", fontWeight: 600, lineHeight: 1.05, margin: 0, letterSpacing: "-0.01em" }}>
             A working log,<br /><span style={{ color: "var(--accent)" }}>not a feed.</span>
           </h1>
-          <p style={{ maxWidth: 440, marginTop: 20, fontSize: 16, lineHeight: 1.6, color: "rgba(237,230,218,0.72)" }}>
+          <p style={{ maxWidth: 440, marginTop: 20, fontSize: 16, lineHeight: 1.6, color: "rgba(237,230,218,0.85)" }}>
             Ten years of sound, some finished, some still open. This is the room
             before the room — everything gets logged here first, off the platforms,
             on its own terms.
           </p>
-          <div className="mono" style={{ display: "flex", gap: 24, marginTop: 28, fontSize: 12, color: "rgba(237,230,218,0.55)" }}>
+          <div className="mono" style={{ display: "flex", gap: 24, marginTop: 28, fontSize: 12, color: "rgba(237,230,218,0.7)" }}>
             <span><Circle size={7} fill="var(--accent)" color="var(--accent)" style={{ verticalAlign: "middle", marginRight: 6 }} />{finishedCount} FINISHED</span>
             {sketchCount > 0 && (
               <span><Circle size={7} fill="var(--sketch)" color="var(--sketch)" style={{ verticalAlign: "middle", marginRight: 6 }} />{sketchCount} SKETCHES</span>
             )}
           </div>
         </div>
+      </div>
 
+      <div className="catalog-root" style={{ maxWidth: 780, margin: "0 auto", padding: "40px 24px 100px" }}>
         <div style={{ borderTop: "1px solid var(--line)" }}>
           {TRACKS.map((track, i) => {
             const isPlaying = playingId === track.id;
