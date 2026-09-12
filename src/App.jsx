@@ -58,7 +58,7 @@ export default function App() {
             left: 0,
             width: "100%",
             height: "130%",
-            backgroundImage: "url('/public/preview.webp')",
+            backgroundImage: "url('/preview.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center 25%",
             transform: `translateY(${scrollY * 0.35}px)`,
