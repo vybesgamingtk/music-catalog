@@ -73,49 +73,53 @@ export default function App() {
           }}
         />
         <div
-          className="catalog-root"
-          style={{
-            position: "relative",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            maxWidth: 780,
-            margin: "0 auto",
-            padding: "24px 24px 48px",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-  <div className="mono" style={{ fontSize: 12, letterSpacing: 2, color: "var(--accent)" }}>
+  className="catalog-root"
+  style={{
+    position: "relative",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    textAlign: "center",
+    maxWidth: 780,
+    margin: "0 auto",
+    padding: "24px 24px 48px",
+  }}
+>
+  <div className="mono" style={{ fontSize: 12, letterSpacing: 2, color: "var(--accent)", marginBottom: 14 }}>
     REEL 001 — {TRACKS.length} TRACKS LOGGED
   </div>
+
+  <h1 style={{ fontSize: "clamp(38px, 6vw, 58px)", fontWeight: 600, lineHeight: 1.05, margin: 0, letterSpacing: "-0.01em" }}>
+    A working log,<br /><span style={{ color: "var(--accent)" }}>not a feed.</span>
+  </h1>
+
   <a
     href="https://music.youtube.com/@chitcray?si=xToZ5NkJPf7HxsV0"
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Listen on YouTube Music"
-    style={{ display: "inline-flex", alignItems: "center", opacity: 0.85, transition: "opacity 0.15s ease" }}
+    style={{ display: "inline-flex", alignItems: "center", opacity: 0.9, marginTop: 20, transition: "opacity 0.15s ease" }}
     onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
-    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
+    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.9)}
   >
-    <img src="/OIP-1204898396.jpeg" alt="YouTube Music" style={{ height: 28, width: 28 }} />
+    <img src="/youtube-music-zkkh10gbed6ker8x0adgd.png" alt="YouTube Music" style={{ height: 52, width: 52 }} />
   </a>
+
+  <p style={{ maxWidth: 440, marginTop: 20, fontSize: 16, lineHeight: 1.6, color: "rgba(237,230,218,0.85)" }}>
+    Ten years of sound, some finished, some still open. This is the room
+    before the room — everything gets logged here first, off the platforms,
+    on its own terms.
+  </p>
+
+  <div className="mono" style={{ display: "flex", gap: 24, marginTop: 28, fontSize: 12, color: "rgba(237,230,218,0.7)" }}>
+    <span><Circle size={7} fill="var(--accent)" color="var(--accent)" style={{ verticalAlign: "middle", marginRight: 6 }} />{finishedCount} FINISHED</span>
+    {sketchCount > 0 && (
+      <span><Circle size={7} fill="var(--sketch)" color="var(--sketch)" style={{ verticalAlign: "middle", marginRight: 6 }} />{sketchCount} SKETCHES</span>
+    )}
+  </div>
 </div>
-          <h1 style={{ fontSize: "clamp(38px, 6vw, 58px)", fontWeight: 600, lineHeight: 1.05, margin: 0, letterSpacing: "-0.01em" }}>
-            A working log,<br /><span style={{ color: "var(--accent)" }}>not a feed.</span>
-          </h1>
-          <p style={{ maxWidth: 440, marginTop: 20, fontSize: 16, lineHeight: 1.6, color: "rgba(237,230,218,0.85)" }}>
-            Ten years of sound, some finished, some still open. This is the room
-            before the room — everything gets logged here first, off the platforms,
-            on its own terms.
-          </p>
-          <div className="mono" style={{ display: "flex", gap: 24, marginTop: 28, fontSize: 12, color: "rgba(237,230,218,0.7)" }}>
-            <span><Circle size={7} fill="var(--accent)" color="var(--accent)" style={{ verticalAlign: "middle", marginRight: 6 }} />{finishedCount} FINISHED</span>
-            {sketchCount > 0 && (
-              <span><Circle size={7} fill="var(--sketch)" color="var(--sketch)" style={{ verticalAlign: "middle", marginRight: 6 }} />{sketchCount} SKETCHES</span>
-            )}
-          </div>
-        </div>
       </div>
 
       <div className="catalog-root" style={{ maxWidth: 780, margin: "0 auto", padding: "40px 24px 100px" }}>
