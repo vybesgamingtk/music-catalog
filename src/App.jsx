@@ -85,9 +85,22 @@ export default function App() {
             padding: "24px 24px 48px",
           }}
         >
-          <div className="mono" style={{ fontSize: 12, letterSpacing: 2, color: "var(--accent)", marginBottom: 14 }}>
-            REEL 001 — {TRACKS.length} TRACKS LOGGED
-          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+  <div className="mono" style={{ fontSize: 12, letterSpacing: 2, color: "var(--accent)" }}>
+    REEL 001 — {TRACKS.length} TRACKS LOGGED
+  </div>
+  <a
+    href="https://music.youtube.com/@chitcray?si=xToZ5NkJPf7HxsV0"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Listen on YouTube Music"
+    style={{ display: "inline-flex", alignItems: "center", opacity: 0.85, transition: "opacity 0.15s ease" }}
+    onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
+    onMouseLeave={(e) => (e.currentTarget.style.opacity = 0.85)}
+  >
+    <img src="/OIP-1204898396.jpeg" alt="YouTube Music" style={{ height: 28, width: 28 }} />
+  </a>
+</div>
           <h1 style={{ fontSize: "clamp(38px, 6vw, 58px)", fontWeight: 600, lineHeight: 1.05, margin: 0, letterSpacing: "-0.01em" }}>
             A working log,<br /><span style={{ color: "var(--accent)" }}>not a feed.</span>
           </h1>
